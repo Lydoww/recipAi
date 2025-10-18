@@ -19,10 +19,8 @@ export default function AddRecipeScreen() {
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit() {
-    // Reset error
     setError(null);
 
-    // Validation
     const validation = validateVideoUrl(url);
     if (!validation.isValid) {
       setError(validation.error || 'Invalid URL');
@@ -32,18 +30,13 @@ export default function AddRecipeScreen() {
     setLoading(true);
 
     try {
-      // TODO: Appel à l'Edge Function Supabase (Phase 2)
       alert(
         `Recipe processing not implemented yet!\n\n` +
         `Platform detected: ${validation.platform}\n` +
         `Coming in next step 🚀`
       );
-
-      // Pour l'instant, on retourne à l'accueil
-      // router.back();
     } catch (err) {
       setError('Error processing recipe. Please try again.');
-      console.error('Error:', err);
     } finally {
       setLoading(false);
     }
@@ -71,7 +64,7 @@ export default function AddRecipeScreen() {
             value={url}
             onChangeText={(text) => {
               setUrl(text);
-              setError(null); // Clear error when user types
+              setError(null);
             }}
             autoCapitalize="none"
             autoCorrect={false}
