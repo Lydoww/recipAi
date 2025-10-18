@@ -42,16 +42,26 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
   - [x] Check cache (source_url unique constraint)
   - [x] Save to database
   - [x] Return recipe data
+  - [x] Mock recipe generation (Pasta Carbonara)
 - [x] Frontend integration
   - [x] Call Edge Function from `add-recipe.tsx`
   - [x] Loading states
   - [x] Success/Error handling
   - [x] Redirect to recipe detail
+  - [x] Cache detection ("generated" vs "loaded from cache")
 - [x] Protections
   - [x] URL cache (avoid reprocessing)
   - [x] CORS headers
   - [x] Error handling
-- [x] Deployment guide created (`DEPLOYMENT.md`)
+- [x] Deployment & Testing
+  - [x] Deployed to Supabase production
+  - [x] Tested with curl (200 OK)
+  - [x] Tested in mobile app (success)
+  - [x] Cache verified (same URL = same recipe ID)
+  - [x] Persistence verified (recipes appear on home screen)
+- [x] Documentation
+  - [x] Deployment guide created (`DEPLOYMENT.md`)
+  - [x] README updated
 
 ### 🚧 **Phase 2b: Real AI Integration (TODO)**
 - [ ] OpenAI API integration
