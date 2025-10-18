@@ -1,5 +1,5 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
+import "@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "@supabase/supabase-js";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -80,10 +80,11 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return new Response(
       JSON.stringify({
-        error: error.message,
+        error: errorMessage,
       }),
       {
         status: 400,
@@ -105,11 +106,8 @@ function normalizeUrl(url: string): string {
 }
 
 async function processVideoToRecipe(videoUrl: string): Promise<Recipe> {
-  const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
-  if (!openaiApiKey) {
-    throw new Error("OpenAI API key not configured");
-  }
-
+  // Phase 2a: Return mock data
+  // Phase 2b: Will use OpenAI API (Whisper + GPT-4o)
   const mockRecipe: Recipe = {
     title: "Delicious Pasta Carbonara",
     ingredients: [

@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { Recipe, ProcessRecipeResponse, ApiResponse } from '../types';
+import { ProcessRecipeResponse, ApiResponse } from '../types';
 
 export async function processRecipeFromUrl(url: string): Promise<ApiResponse<ProcessRecipeResponse>> {
   try {
