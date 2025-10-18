@@ -7,10 +7,11 @@ import {
   Text,
   TextInput,
   View,
+  Alert,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Button } from '../components';
-import { validateVideoUrl } from '../lib/validation';
+import { validateVideoUrl, processRecipeFromUrl } from '../lib';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 
 export default function AddRecipeScreen() {
@@ -30,13 +31,36 @@ export default function AddRecipeScreen() {
     setLoading(true);
 
     try {
-      alert(
-        `Recipe processing not implemented yet!\n\n` +
-        `Platform detected: ${validation.platform}\n` +
-        `Coming in next step 🚀`
-      );
+      const result = await processRecipeFromUrl(url);
+
+      if (result.error) {
+        setError(result.error.message);
+        return;
+      }
+
+      if (result.data) {
+        const { recipe, cached } = result.data;
+
+        Alert.alert(
+          'Success!',
+          cached
+            ? 'Recipe loaded from cache'
+            : 'Recipe generated successfully!',
+          [
+            {
+              text: 'View Recipe',
+              onPress: () => {
+                router.push({
+                  pathname: '/recipe-detail',
+                  params: { recipe: JSON.stringify(recipe) },
+                });
+              },
+            },
+          ]
+        );
+      }
     } catch (err) {
-      setError('Error processing recipe. Please try again.');
+      setError('Unexpected error. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -35,21 +35,34 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
 - [x] URL validation (TikTok/Instagram)
 - [x] Clean architecture (40+ unused files removed)
 
-### 🚧 **Phase 2: Backend MVP (TODO)**
-- [ ] Supabase Edge Function
-  - [ ] Receive video URL
-  - [ ] Download video/audio
-  - [ ] Transcription with Whisper
-  - [ ] Recipe parsing with GPT-4o
-  - [ ] Save to database
-- [ ] Frontend integration
-  - [ ] Call Edge Function from `add-recipe.tsx`
-  - [ ] Loading states
-  - [ ] Redirect to recipe detail
-- [ ] Protections
+### ✅ **Phase 2a: Backend MVP - Mock Data (COMPLETED)**
+- [x] Supabase Edge Function created (`process-recipe`)
+  - [x] Receive video URL
+  - [x] Validate and normalize URL
+  - [x] Check cache (source_url unique constraint)
+  - [x] Save to database
+  - [x] Return recipe data
+- [x] Frontend integration
+  - [x] Call Edge Function from `add-recipe.tsx`
+  - [x] Loading states
+  - [x] Success/Error handling
+  - [x] Redirect to recipe detail
+- [x] Protections
+  - [x] URL cache (avoid reprocessing)
+  - [x] CORS headers
+  - [x] Error handling
+- [x] Deployment guide created (`DEPLOYMENT.md`)
+
+### 🚧 **Phase 2b: Real AI Integration (TODO)**
+- [ ] OpenAI API integration
+  - [ ] Video download (TikTok/Instagram scraping)
+  - [ ] Audio extraction
+  - [ ] Whisper transcription
+  - [ ] GPT-4o recipe parsing
+- [ ] Advanced protections
   - [ ] Rate limiting (10 recipes/day/user)
-  - [ ] URL cache (avoid reprocessing)
   - [ ] OpenAI hard limit ($50/month)
+  - [ ] Cost monitoring
 
 ### 📅 **Phase 3: Beta Launch (Future)**
 - [ ] User accounts (Google, Apple ID)
@@ -461,6 +474,6 @@ Private project - All rights reserved
 
 ---
 
-**Last Updated:** 2025-01-18
-**Current Phase:** Phase 1 Complete, Phase 2 Starting
-**Status:** MVP in development 🚧
+**Last Updated:** 2025-01-19
+**Current Phase:** Phase 2a Complete (Backend with mock data)
+**Status:** MVP functional end-to-end ✅ | Phase 2b (Real AI) in progress 🚧

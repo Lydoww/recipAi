@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx supabase --version)",
+      "Bash(npx supabase init)",
+      "Bash(npx supabase functions new process-recipe)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
