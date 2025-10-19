@@ -100,8 +100,7 @@ export default function EditRecipeScreen() {
 
       setTimeout(() => {
         setShowSuccess(false);
-        router.back();
-        router.push({
+        router.replace({
           pathname: '/recipe-detail',
           params: { recipe: JSON.stringify(updatedRecipe) },
         });
