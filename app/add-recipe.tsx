@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import { router } from 'expo-router';
-import { Button } from '../components';
+import { Button, SuccessAnimation } from '../components';
 import { validateVideoUrl, processRecipeFromUrl } from '../lib';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 
@@ -18,6 +18,7 @@ export default function AddRecipeScreen() {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   async function handleSubmit() {
     setError(null);
@@ -39,25 +40,17 @@ export default function AddRecipeScreen() {
       }
 
       if (result.data) {
-        const { recipe, cached } = result.data;
+        const { recipe } = result.data;
 
-        Alert.alert(
-          'Success!',
-          cached
-            ? 'Recipe loaded from cache'
-            : 'Recipe generated successfully!',
-          [
-            {
-              text: 'View Recipe',
-              onPress: () => {
-                router.push({
-                  pathname: '/recipe-detail',
-                  params: { recipe: JSON.stringify(recipe) },
-                });
-              },
-            },
-          ]
-        );
+        setShowSuccess(true);
+
+        setTimeout(() => {
+          setShowSuccess(false);
+          router.push({
+            pathname: '/recipe-detail',
+            params: { recipe: JSON.stringify(recipe) },
+          });
+        }, 2500);
       }
     } catch (err) {
       setError('Unexpected error. Please try again.');
@@ -71,6 +64,10 @@ export default function AddRecipeScreen() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <SuccessAnimation
+        visible={showSuccess}
+        onAnimationFinish={() => setShowSuccess(false)}
+      />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.headerIcon}>🎥</Text>
