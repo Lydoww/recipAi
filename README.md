@@ -76,7 +76,23 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
   - [x] GPT-4o-mini (~$0.0002 per recipe)
   - [x] URL cache (avoid reprocessing)
 
-### 🚧 **Phase 2c: Video Processing (IN PROGRESS)**
+### ✅ **Phase 2c: Search & Discovery (COMPLETED)**
+- [x] Search bar with Ionicons
+  - [x] Focus effects (sage green border, icon color change)
+  - [x] Clear button when typing
+  - [x] 300ms debounce for performance
+- [x] Real-time filtering
+  - [x] Search by recipe title
+  - [x] Search by ingredients
+  - [x] Search by category
+- [x] 2-column grid layout
+  - [x] Smaller recipe cards (140px images)
+  - [x] Compact typography
+  - [x] Responsive flex layout
+- [x] Empty search state with helpful message
+- [x] useDebounce custom hook
+
+### 🚧 **Phase 2d: Video Processing (NEXT)**
 - [ ] Real video download (TikTok/Instagram scraping with yt-dlp)
 - [ ] Audio extraction from video
 - [ ] Whisper API transcription
@@ -126,6 +142,7 @@ recipai/
 ├── 🪝 hooks/                        # Custom React hooks
 │   ├── useAsyncState.ts             # Generic async state management
 │   ├── useRecipes.ts                # Fetch recipes from Supabase
+│   ├── useDebounce.ts               # Debounce hook for search
 │   └── index.ts                     # Centralized exports
 │
 ├── 🛠️ lib/                          # Utilities & configs
@@ -316,6 +333,12 @@ Automatically fetches recipes from Supabase with error handling.
 const { data, loading, error, setData, setError, reset } = useAsyncState<Recipe[]>([]);
 ```
 Generic hook for async operations.
+
+### **useDebounce**
+```typescript
+const debouncedSearchQuery = useDebounce(searchQuery, 300);
+```
+Debounces input value for performance optimization (e.g., search).
 
 ---
 
@@ -508,10 +531,13 @@ Private project - All rights reserved
 ---
 
 **Last Updated:** 2025-01-19
-**Current Phase:** Phase 2b Complete (OpenAI Integration)
-**Status:** GPT-4 parsing working ✅ | Phase 2c (Real Video) next 🚧
+**Current Phase:** Phase 2c Complete (Search & Discovery)
+**Status:** Search + 2-column grid working ✅ | Phase 2d (Real Video) next 🚧
 
 ### **Recent Updates**
+- ✅ Search with debounce and focus effects
+- ✅ 2-column grid layout with compact cards
+- ✅ Real-time filtering (title, ingredients, category)
 - ✅ OpenAI GPT-4o-mini integration
 - ✅ Category-based image mapping
 - ✅ Bottom tab navigation (Recipes, Add, Settings)
