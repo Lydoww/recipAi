@@ -1,12 +1,13 @@
 /**
  * Export centralisé des composants réutilisables
+ * Organized by domain for better scalability
  */
 
-export * from './RecipeCard';
-export * from './LoadingState';
-export * from './AnimatedLoadingState';
-export * from './EmptyState';
-export * from './ErrorState';
-export * from './Button';
-export * from './FilterChip';
-export * from './SuccessAnimation';
+// Feedback components (loading, errors, success, empty states)
+export * from './feedback';
+
+// Generic UI components (buttons, chips, inputs)
+export * from './ui';
+
+// Recipe-specific components
+export * from './recipe';

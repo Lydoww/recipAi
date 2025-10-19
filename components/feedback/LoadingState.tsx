@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { LoadingStateProps } from '../types';
-import { colors, spacing, typography } from '../constants/theme';
+import { LoadingStateProps } from '../../types';
+import { colors, spacing, typography } from '../../constants/theme';
 
 export function LoadingState({ message = 'Loading...', testID }: LoadingStateProps) {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { EmptyStateProps } from '../types';
-import { colors, spacing, typography, borderRadius, shadows } from '../constants/theme';
+import { EmptyStateProps } from '../../types';
+import { colors, spacing, typography, borderRadius, shadows } from '../../constants/theme';
 
 export function EmptyState({
   icon,

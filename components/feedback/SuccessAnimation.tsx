@@ -1,7 +1,7 @@
 import LottieView from 'lottie-react-native';
 import React, { useEffect, useRef } from 'react';
 import { Modal, StyleSheet, View, Text } from 'react-native';
-import { colors, typography, spacing } from '../constants/theme';
+import { colors, typography, spacing } from '../../constants/theme';
 
 interface SuccessAnimationProps {
   visible: boolean;
@@ -39,7 +39,7 @@ export function SuccessAnimation({
           <View style={styles.animationContainer}>
             <LottieView
               ref={animationRef}
-              source={require('../assets/animations/Trophy.json')}
+              source={require('../../assets/animations/Trophy.json')}
               autoPlay
               loop={false}
               style={styles.animation}

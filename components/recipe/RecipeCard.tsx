@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Recipe } from '../types';
-import { colors, spacing, borderRadius, typography, shadows } from '../constants/theme';
+import { Recipe } from '../../types';
+import { colors, spacing, borderRadius, typography, shadows } from '../../constants/theme';
 
 interface RecipeCardProps {
   recipe: Recipe;

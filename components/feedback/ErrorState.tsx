@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { ErrorStateProps } from '../types';
-import { colors, spacing, typography, borderRadius } from '../constants/theme';
+import { ErrorStateProps } from '../../types';
+import { colors, spacing, typography, borderRadius } from '../../constants/theme';
 
 export function ErrorState({ message, onRetry, testID }: ErrorStateProps) {
   return (
