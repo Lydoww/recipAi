@@ -180,16 +180,22 @@ recipai/
 │   ├── recipe-detail.tsx            # Recipe details (fetch by ID, auto-refetch)
 │   └── edit-recipe.tsx              # Edit recipe form (fetch by ID)
 │
-├── 🧩 components/                   # Reusable UI components
-│   ├── Button.tsx                   # Premium button with shadows
-│   ├── EmptyState.tsx               # Empty state with action
-│   ├── ErrorState.tsx               # Error state with retry
-│   ├── FilterChip.tsx               # Filter chip for categories/duration
-│   ├── LoadingState.tsx             # Basic loading spinner (legacy)
-│   ├── AnimatedLoadingState.tsx     # Lottie loading animation (sandy_loading)
-│   ├── RecipeCard.tsx               # Recipe card (premium design)
-│   ├── SuccessAnimation.tsx         # Lottie trophy animation
-│   └── index.ts                     # Centralized exports
+├── 🧩 components/                   # Reusable UI components (organized by domain)
+│   ├── feedback/                    # User feedback components
+│   │   ├── LoadingState.tsx         # Basic loading spinner (legacy)
+│   │   ├── AnimatedLoadingState.tsx # Lottie loading animation (sandy_loading)
+│   │   ├── ErrorState.tsx           # Error state with retry
+│   │   ├── EmptyState.tsx           # Empty state with action
+│   │   ├── SuccessAnimation.tsx     # Lottie trophy animation
+│   │   └── index.ts                 # Feedback exports
+│   ├── ui/                          # Generic UI components
+│   │   ├── Button.tsx               # Premium button with shadows
+│   │   ├── FilterChip.tsx           # Filter chip for categories/duration
+│   │   └── index.ts                 # UI exports
+│   ├── recipe/                      # Recipe-specific components
+│   │   ├── RecipeCard.tsx           # Recipe card (premium design)
+│   │   └── index.ts                 # Recipe exports
+│   └── index.ts                     # Main export (re-exports all subfolders)
 │
 ├── 🎬 assets/animations/            # Lottie animations
 │   ├── Trophy.json                  # Success animation
