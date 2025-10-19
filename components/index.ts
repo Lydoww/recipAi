@@ -7,4 +7,5 @@ export * from './LoadingState';
 export * from './EmptyState';
 export * from './ErrorState';
 export * from './Button';
+export * from './FilterChip';
 export * from './SuccessAnimation';

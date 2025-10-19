@@ -92,7 +92,26 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
 - [x] Empty search state with helpful message
 - [x] useDebounce custom hook
 
-### 🚧 **Phase 2d: Video Processing (NEXT)**
+### ✅ **Phase 2d: Advanced Filters (COMPLETED)**
+- [x] Category filter chips
+  - [x] 10 popular cuisines (Italian, Japanese, Mexican, etc.)
+  - [x] Horizontal scroll for categories
+  - [x] Toggle selection (click to select/deselect)
+- [x] Duration filter chips
+  - [x] Quick (<20 min), Medium (<40 min), Long (40+ min)
+  - [x] Parse duration from recipe metadata
+- [x] Combined filtering logic
+  - [x] Search + Category + Duration work together
+  - [x] All filters are combinable (AND logic)
+- [x] Clear all filters button
+  - [x] Appears when any filter is active
+  - [x] Resets search, category, and duration
+- [x] FilterChip component
+  - [x] Reusable chip with selected state
+  - [x] Premium styling with shadows and borders
+  - [x] Sage green highlight when selected
+
+### 🚧 **Phase 2e: Video Processing (NEXT)**
 - [ ] Real video download (TikTok/Instagram scraping with yt-dlp)
 - [ ] Audio extraction from video
 - [ ] Whisper API transcription
@@ -128,6 +147,7 @@ recipai/
 │   ├── Button.tsx                   # Premium button with shadows
 │   ├── EmptyState.tsx               # Empty state with action
 │   ├── ErrorState.tsx               # Error state with retry
+│   ├── FilterChip.tsx               # Filter chip for categories/duration
 │   ├── LoadingState.tsx             # Loading spinner
 │   ├── RecipeCard.tsx               # Recipe card (premium design)
 │   ├── SuccessAnimation.tsx         # Lottie trophy animation
@@ -299,6 +319,15 @@ const styles = StyleSheet.create({
 <RecipeCard
   recipe={recipeData}
   onPress={() => navigateToDetail(recipe)}
+/>
+```
+
+### **FilterChip**
+```typescript
+<FilterChip
+  label="Italian"
+  selected={selectedCategory === 'Italian'}
+  onPress={() => setSelectedCategory('Italian')}
 />
 ```
 
@@ -531,10 +560,13 @@ Private project - All rights reserved
 ---
 
 **Last Updated:** 2025-01-19
-**Current Phase:** Phase 2c Complete (Search & Discovery)
-**Status:** Search + 2-column grid working ✅ | Phase 2d (Real Video) next 🚧
+**Current Phase:** Phase 2d Complete (Advanced Filters)
+**Status:** Search + Filters + Grid working ✅ | Phase 2e (Real Video) next 🚧
 
 ### **Recent Updates**
+- ✅ Advanced filters (category + duration chips)
+- ✅ Combined filtering logic (search + category + duration)
+- ✅ Clear all filters button
 - ✅ Search with debounce and focus effects
 - ✅ 2-column grid layout with compact cards
 - ✅ Real-time filtering (title, ingredients, category)
