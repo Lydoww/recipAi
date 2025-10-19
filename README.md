@@ -141,6 +141,11 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
   - [x] Fetch recipe data by ID in detail/edit screens
   - [x] Auto-refetch with useFocusEffect hook
   - [x] Fixed double-back-press issue after editing
+- [x] Animated loading states
+  - [x] AnimatedLoadingState component with Lottie
+  - [x] sandy_loading.json animation (300x300px)
+  - [x] Replaced basic spinners across all screens
+  - [x] Home screen, recipe detail, edit recipe
 
 ### 🚧 **Phase 3: Video Processing (NEXT)**
 - [ ] Real video download (TikTok/Instagram scraping with yt-dlp)
@@ -180,13 +185,16 @@ recipai/
 │   ├── EmptyState.tsx               # Empty state with action
 │   ├── ErrorState.tsx               # Error state with retry
 │   ├── FilterChip.tsx               # Filter chip for categories/duration
-│   ├── LoadingState.tsx             # Loading spinner
+│   ├── LoadingState.tsx             # Basic loading spinner (legacy)
+│   ├── AnimatedLoadingState.tsx     # Lottie loading animation (sandy_loading)
 │   ├── RecipeCard.tsx               # Recipe card (premium design)
 │   ├── SuccessAnimation.tsx         # Lottie trophy animation
 │   └── index.ts                     # Centralized exports
 │
 ├── 🎬 assets/animations/            # Lottie animations
-│   └── Trophy.json                  # Success animation
+│   ├── Trophy.json                  # Success animation
+│   ├── dl_green.json                # Download/checkmark animation
+│   └── sandy_loading.json           # Loading animation (300x300px)
 │
 ├── 🎨 constants/                    # Design system
 │   └── theme.ts                     # Colors, spacing, typography, shadows
