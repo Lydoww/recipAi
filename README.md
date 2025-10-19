@@ -136,6 +136,11 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
 - [x] Success feedback
   - [x] Trophy animation on successful edit
   - [x] "Recipe edited successfully!" message
+- [x] Navigation pattern refactoring
+  - [x] Pass only recipe ID instead of full objects
+  - [x] Fetch recipe data by ID in detail/edit screens
+  - [x] Auto-refetch with useFocusEffect hook
+  - [x] Fixed double-back-press issue after editing
 
 ### 🚧 **Phase 3: Video Processing (NEXT)**
 - [ ] Real video download (TikTok/Instagram scraping with yt-dlp)
@@ -167,8 +172,8 @@ recipai/
 │   │   ├── index.tsx                # Tab 1: Recipes list with filters
 │   │   ├── add.tsx                  # Tab 2: Add recipe from URL
 │   │   └── settings.tsx             # Tab 3: Settings
-│   ├── recipe-detail.tsx            # Recipe details with edit button
-│   └── edit-recipe.tsx              # Edit recipe form
+│   ├── recipe-detail.tsx            # Recipe details (fetch by ID, auto-refetch)
+│   └── edit-recipe.tsx              # Edit recipe form (fetch by ID)
 │
 ├── 🧩 components/                   # Reusable UI components
 │   ├── Button.tsx                   # Premium button with shadows
