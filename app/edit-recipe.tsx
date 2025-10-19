@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -12,28 +12,60 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Button, SuccessAnimation } from '../components';
+import { Button, SuccessAnimation, LoadingState, ErrorState } from '../components';
 import {
   borderRadius,
   colors,
   spacing,
   typography,
 } from '../constants/theme';
-import { Recipe } from '../types/database';
+import { Database, Recipe } from '../types/database';
 import { supabase } from '../lib/supabase';
 
 export default function EditRecipeScreen() {
   const params = useLocalSearchParams();
-  const recipe: Recipe = JSON.parse(params.recipe as string);
+  const recipeId = params.id as string;
 
-  const [title, setTitle] = useState(recipe.title);
-  const [duration, setDuration] = useState(recipe.duration || '');
-  const [category, setCategory] = useState(recipe.category || '');
-  const [ingredients, setIngredients] = useState(recipe.ingredients.join('\n'));
-  const [steps, setSteps] = useState(recipe.steps.join('\n'));
-  const [loading, setLoading] = useState(false);
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [title, setTitle] = useState('');
+  const [duration, setDuration] = useState('');
+  const [category, setCategory] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [steps, setSteps] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch recipe data
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      setLoading(true);
+      try {
+        const { data, error: fetchError } = await supabase
+          .from('recipes')
+          .select('*')
+          .eq('id', recipeId)
+          .single<Recipe>();
+
+        if (fetchError) throw fetchError;
+        if (!data) throw new Error('Recipe not found');
+
+        setRecipe(data);
+        setTitle(data.title);
+        setDuration(data.duration || '');
+        setCategory(data.category || '');
+        setIngredients(data.ingredients.join('\n'));
+        setSteps(data.steps.join('\n'));
+      } catch (err: any) {
+        setError(err.message || 'Failed to load recipe');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [recipeId]);
 
   async function handleSave() {
     setError(null);
@@ -64,11 +96,12 @@ export default function EditRecipeScreen() {
       return;
     }
 
-    setLoading(true);
+    setSaving(true);
 
     try {
       const { error: updateError } = await supabase
         .from('recipes')
+        // @ts-ignore - Supabase type inference issue with update
         .update({
           title: title.trim(),
           duration: duration.trim() || null,
@@ -77,39 +110,39 @@ export default function EditRecipeScreen() {
           steps: stepsArray,
           edited_by_user: true,
         })
-        .eq('id', recipe.id);
+        .eq('id', recipeId);
 
       if (updateError) {
         setError(updateError.message);
         return;
       }
 
-      // Success - navigate back to detail with updated recipe
-      const updatedRecipe: Recipe = {
-        ...recipe,
-        title: title.trim(),
-        duration: duration.trim() || null,
-        category: category.trim() || null,
-        ingredients: ingredientsArray,
-        steps: stepsArray,
-        edited_by_user: true,
-      };
-
       // Show success animation
       setShowSuccess(true);
 
       setTimeout(() => {
         setShowSuccess(false);
-        router.replace({
-          pathname: '/recipe-detail',
-          params: { recipe: JSON.stringify(updatedRecipe) },
-        });
+        // Just go back - recipe-detail will refetch automatically
+        router.back();
       }, 2500);
     } catch (err) {
       setError('Failed to update recipe. Please try again.');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
+  }
+
+  if (loading) {
+    return <LoadingState message="Loading recipe..." />;
+  }
+
+  if (error && !recipe) {
+    return (
+      <ErrorState
+        message={error}
+        onRetry={() => router.back()}
+      />
+    );
   }
 
   return (
@@ -232,8 +265,8 @@ export default function EditRecipeScreen() {
             <Button
               label='Save Changes'
               onPress={handleSave}
-              loading={loading}
-              disabled={loading}
+              loading={saving}
+              disabled={saving}
               variant='primary'
               size='medium'
             />

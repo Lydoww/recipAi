@@ -52,7 +52,7 @@ export default function AddRecipeScreen() {
           setShowSuccess(false);
           router.push({
             pathname: '/recipe-detail',
-            params: { recipe: JSON.stringify(recipe) },
+            params: { id: recipe.id },
           });
         }, 2500);
       }

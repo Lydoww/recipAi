@@ -52,7 +52,7 @@ export default function HomeScreen() {
   const handleRecipePress = (recipe: Recipe) => {
     router.push({
       pathname: '/recipe-detail',
-      params: { recipe: JSON.stringify(recipe) },
+      params: { id: recipe.id },
     });
   };
 

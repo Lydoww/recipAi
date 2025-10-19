@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -7,21 +7,75 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Recipe } from '../types/database';
 import { colors, spacing, typography, borderRadius, shadows } from '../constants/theme';
+import { supabase } from '../lib/supabase';
+import { LoadingState, ErrorState } from '../components';
 
 export default function RecipeDetailScreen() {
   const params = useLocalSearchParams();
-  const recipe: Recipe = JSON.parse(params.recipe as string);
+  const recipeId = params.id as string;
+
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchRecipe = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('recipes')
+        .select('*')
+        .eq('id', recipeId)
+        .single<Recipe>();
+
+      if (fetchError) throw fetchError;
+      if (!data) throw new Error('Recipe not found');
+      setRecipe(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to load recipe');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch on mount
+  useEffect(() => {
+    fetchRecipe();
+  }, [recipeId]);
+
+  // Refetch when screen comes into focus (e.g., after editing)
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchRecipe();
+    }, [recipeId])
+  );
 
   const handleEdit = () => {
-    router.push({
-      pathname: '/edit-recipe',
-      params: { recipe: JSON.stringify(recipe) },
-    });
+    if (recipe) {
+      router.push({
+        pathname: '/edit-recipe',
+        params: { id: recipe.id },
+      });
+    }
   };
+
+  if (loading) {
+    return <LoadingState message="Loading recipe..." />;
+  }
+
+  if (error || !recipe) {
+    return (
+      <ErrorState
+        message={error || 'Recipe not found'}
+        onRetry={fetchRecipe}
+      />
+    );
+  }
 
   return (
     <ScrollView style={styles.container}>
