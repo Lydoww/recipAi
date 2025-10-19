@@ -63,16 +63,26 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
   - [x] Deployment guide created (`DEPLOYMENT.md`)
   - [x] README updated
 
-### 🚧 **Phase 2b: Real AI Integration (TODO)**
-- [ ] OpenAI API integration
-  - [ ] Video download (TikTok/Instagram scraping)
-  - [ ] Audio extraction
-  - [ ] Whisper transcription
-  - [ ] GPT-4o recipe parsing
-- [ ] Advanced protections
-  - [ ] Rate limiting (10 recipes/day/user)
-  - [ ] OpenAI hard limit ($50/month)
-  - [ ] Cost monitoring
+### ✅ **Phase 2b: OpenAI Integration (COMPLETED)**
+- [x] OpenAI API integration
+  - [x] OpenAI SDK installed (Deno)
+  - [x] API key configured in Supabase secrets
+  - [x] GPT-4o-mini for recipe parsing
+  - [x] Mock transcript parsing (Phase 2c will add real video)
+  - [x] Category-based image mapping (19 cuisines)
+- [x] Cost protections
+  - [x] Budget limit ($10/month hard cap)
+  - [x] Usage alerts (50%, 80%, 100%)
+  - [x] GPT-4o-mini (~$0.0002 per recipe)
+  - [x] URL cache (avoid reprocessing)
+
+### 🚧 **Phase 2c: Video Processing (IN PROGRESS)**
+- [ ] Real video download (TikTok/Instagram scraping with yt-dlp)
+- [ ] Audio extraction from video
+- [ ] Whisper API transcription
+- [ ] Replace mock transcript with real audio transcription
+- [ ] Rate limiting (10 recipes/day/user)
+- [ ] Cost monitoring dashboard
 
 ### 📅 **Phase 3: Beta Launch (Future)**
 - [ ] User accounts (Google, Apple ID)
@@ -90,18 +100,25 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
 ```
 recipai/
 ├── 📱 app/                          # Expo Router routes
-│   ├── _layout.tsx                  # Root layout
-│   ├── index.tsx                    # Home (recipe list)
-│   ├── add-recipe.tsx               # Add recipe from URL
-│   └── recipe-detail.tsx            # Recipe details view
+│   ├── _layout.tsx                  # Root Stack layout
+│   ├── (tabs)/                      # Tab Navigator
+│   │   ├── _layout.tsx              # Tabs configuration
+│   │   ├── index.tsx                # Tab 1: Recipes list
+│   │   ├── add.tsx                  # Tab 2: Add recipe
+│   │   └── settings.tsx             # Tab 3: Settings
+│   └── recipe-detail.tsx            # Recipe details (modal)
 │
 ├── 🧩 components/                   # Reusable UI components
-│   ├── Button.tsx                   # Button (3 variants, 3 sizes)
+│   ├── Button.tsx                   # Premium button with shadows
 │   ├── EmptyState.tsx               # Empty state with action
 │   ├── ErrorState.tsx               # Error state with retry
 │   ├── LoadingState.tsx             # Loading spinner
-│   ├── RecipeCard.tsx               # Recipe card component
+│   ├── RecipeCard.tsx               # Recipe card (premium design)
+│   ├── SuccessAnimation.tsx         # Lottie trophy animation
 │   └── index.ts                     # Centralized exports
+│
+├── 🎬 assets/animations/            # Lottie animations
+│   └── Trophy.json                  # Success animation
 │
 ├── 🎨 constants/                    # Design system
 │   └── theme.ts                     # Colors, spacing, typography, shadows
@@ -176,7 +193,7 @@ Create a `.env` file at the root:
 EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
 
-# OpenAI Configuration (future)
+# OpenAI Configuration
 OPENAI_API_KEY=sk-your_key_here
 ```
 
@@ -213,10 +230,12 @@ npx expo start
 
 All design tokens are centralized in `constants/theme.ts`:
 
-### **Colors**
-- Primary: `#10b981` (emerald green)
-- Gray scale: 50 → 900
-- Semantic: success, error, warning, info
+### **Colors - Premium Minimalist Palette**
+- Primary: `#84A98C` (sage green - natural, calming)
+- Primary Dark: `#52796F` (eucalyptus - sophisticated)
+- Background: `#FAFAF9` (warm off-white)
+- Text Primary: `#2F3E46` (charcoal - excellent contrast)
+- Secondary: `#CAD2C5` (pale sage - neutral accent)
 
 ### **Spacing**
 - xs: 4px, sm: 8px, md: 12px, lg: 16px, xl: 20px, 2xl: 24px...
@@ -307,15 +326,19 @@ Generic hook for async operations.
 - Validation on app startup (`lib/config.ts`)
 
 ### **OpenAI Cost Protection**
-- **Hard limit:** $50/month (billing alert)
-- **Rate limiting:** 10 recipes/day/user
-- **Cache:** Same URL = reuse existing recipe
-- **Monitoring:** Daily cost checks
+- **Hard limit:** $10/month (configured in OpenAI dashboard)
+- **Alerts:** 50%, 80%, 100% usage notifications
+- **Cache:** Same URL = reuse existing recipe (no OpenAI call)
+- **Model:** GPT-4o-mini (most cost-effective)
 
-### **Estimated Costs (MVP)**
+### **Current Costs (Phase 2b - Mock Data)**
+- GPT-4o-mini: ~$0.0002/recipe (parsing mock transcript)
+- **Budget:** $10/month = ~50,000 recipes
+
+### **Future Costs (Phase 2c - Real Videos)**
 - Whisper: ~$0.006/min → $0.12/video (20min avg)
-- GPT-4o: ~$0.005/request → $0.01/video
-- **Total:** ~$0.13/recipe × 100 recipes = **$13/month**
+- GPT-4o-mini: ~$0.0002/request
+- **Total:** ~$0.12/recipe × 80 recipes = **$10/month**
 
 ---
 
@@ -485,5 +508,13 @@ Private project - All rights reserved
 ---
 
 **Last Updated:** 2025-01-19
-**Current Phase:** Phase 2a Complete (Backend with mock data)
-**Status:** MVP functional end-to-end ✅ | Phase 2b (Real AI) in progress 🚧
+**Current Phase:** Phase 2b Complete (OpenAI Integration)
+**Status:** GPT-4 parsing working ✅ | Phase 2c (Real Video) next 🚧
+
+### **Recent Updates**
+- ✅ OpenAI GPT-4o-mini integration
+- ✅ Category-based image mapping
+- ✅ Bottom tab navigation (Recipes, Add, Settings)
+- ✅ Premium minimalist design system
+- ✅ Lottie success animations
+- ✅ Cost protection ($10/month hard limit)
