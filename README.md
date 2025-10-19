@@ -132,7 +132,10 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
   - [x] Migration file created
 - [x] "Edited by you" badge
   - [x] Shows on recipe detail if edited_by_user is true
-  - [x] Green badge with checkmark icon
+  - [x] Green badge with white text and white checkmark
+- [x] Success feedback
+  - [x] Trophy animation on successful edit
+  - [x] "Recipe edited successfully!" message
 
 ### 🚧 **Phase 3: Video Processing (NEXT)**
 - [ ] Real video download (TikTok/Instagram scraping with yt-dlp)

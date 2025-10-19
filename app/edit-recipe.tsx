@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Button } from '../components';
+import { Button, SuccessAnimation } from '../components';
 import {
   borderRadius,
   colors,
@@ -32,6 +32,7 @@ export default function EditRecipeScreen() {
   const [ingredients, setIngredients] = useState(recipe.ingredients.join('\n'));
   const [steps, setSteps] = useState(recipe.steps.join('\n'));
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleSave() {
@@ -94,18 +95,17 @@ export default function EditRecipeScreen() {
         edited_by_user: true,
       };
 
-      Alert.alert('Success', 'Recipe updated successfully!', [
-        {
-          text: 'OK',
-          onPress: () => {
-            router.back();
-            router.push({
-              pathname: '/recipe-detail',
-              params: { recipe: JSON.stringify(updatedRecipe) },
-            });
-          },
-        },
-      ]);
+      // Show success animation
+      setShowSuccess(true);
+
+      setTimeout(() => {
+        setShowSuccess(false);
+        router.back();
+        router.push({
+          pathname: '/recipe-detail',
+          params: { recipe: JSON.stringify(updatedRecipe) },
+        });
+      }, 2500);
     } catch (err) {
       setError('Failed to update recipe. Please try again.');
     } finally {
@@ -118,6 +118,11 @@ export default function EditRecipeScreen() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <SuccessAnimation
+        visible={showSuccess}
+        onAnimationFinish={() => setShowSuccess(false)}
+        message="Recipe edited successfully!"
+      />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.title}>Edit Recipe</Text>

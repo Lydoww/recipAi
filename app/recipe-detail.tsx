@@ -47,7 +47,7 @@ export default function RecipeDetailScreen() {
 
         {recipe.edited_by_user && (
           <View style={styles.editedBadge}>
-            <Ionicons name='checkmark-circle' size={16} color={colors.primary} />
+            <Ionicons name='checkmark-circle' size={16} color={colors.white} />
             <Text style={styles.editedText}>Edited by you</Text>
           </View>
         )}
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   editedBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.primary,
     alignSelf: 'flex-start',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   editedText: {
     fontSize: typography.fontSize.sm,
     fontWeight: typography.fontWeight.medium,
-    color: colors.primaryDark,
+    color: colors.white,
     marginLeft: spacing.xs,
   },
   metaRow: {
