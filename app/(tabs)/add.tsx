@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -7,12 +8,15 @@ import {
   Text,
   TextInput,
   View,
-  Alert,
 } from 'react-native';
-import { router } from 'expo-router';
-import { Button, SuccessAnimation } from '../components';
-import { validateVideoUrl, processRecipeFromUrl } from '../lib';
-import { colors, spacing, typography, borderRadius } from '../constants/theme';
+import { Button, SuccessAnimation } from '../../components';
+import {
+  borderRadius,
+  colors,
+  spacing,
+  typography,
+} from '../../constants/theme';
+import { processRecipeFromUrl, validateVideoUrl } from '../../lib';
 
 export default function AddRecipeScreen() {
   const [url, setUrl] = useState('');
@@ -80,14 +84,14 @@ export default function AddRecipeScreen() {
         <View style={styles.form}>
           <TextInput
             style={[styles.input, error && styles.inputError]}
-            placeholder="https://www.tiktok.com/@user/video/..."
+            placeholder='https://www.tiktok.com/@user/video/...'
             placeholderTextColor={colors.text.tertiary}
             value={url}
             onChangeText={(text) => {
               setUrl(text);
               setError(null);
             }}
-            autoCapitalize="none"
+            autoCapitalize='none'
             autoCorrect={false}
             multiline
             numberOfLines={3}
@@ -97,7 +101,7 @@ export default function AddRecipeScreen() {
           {error && <Text style={styles.errorText}>{error}</Text>}
 
           <Button
-            label="✨ Generate Recipe"
+            label='✨ Generate Recipe'
             onPress={handleSubmit}
             loading={loading}
             disabled={!url.trim() || loading}

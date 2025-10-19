@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { FlatList, TouchableOpacity, StyleSheet, View, Text } from 'react-native';
-import { useRecipes } from '../hooks';
-import { RecipeCard, LoadingState, EmptyState } from '../components';
-import { Recipe } from '../types';
-import { colors, spacing } from '../constants/theme';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { useRecipes } from '../../hooks';
+import { RecipeCard, LoadingState, EmptyState } from '../../components';
+import { Recipe } from '../../types';
+import { colors, spacing, typography } from '../../constants/theme';
 
 export default function HomeScreen() {
   const { recipes, loading, refetch } = useRecipes();
@@ -34,13 +34,16 @@ export default function HomeScreen() {
         title="No recipes yet"
         subtitle="Add your first recipe from TikTok or Instagram!"
         actionLabel="+ Add Recipe"
-        onAction={() => router.push('/add-recipe')}
+        onAction={() => router.push('/(tabs)/add')}
       />
     );
   }
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Recipes</Text>
+      </View>
       <FlatList
         data={recipes}
         renderItem={({ item }) => (
@@ -54,14 +57,6 @@ export default function HomeScreen() {
         refreshing={refreshing}
         onRefresh={onRefresh}
       />
-
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => router.push('/add-recipe')}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -71,32 +66,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  header: {
+    paddingTop: spacing['3xl'],
+    paddingHorizontal: spacing.xl,
+    paddingBottom: spacing.xl,
+    backgroundColor: colors.backgroundTertiary,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border.light,
+  },
+  headerTitle: {
+    fontSize: typography.fontSize['4xl'],
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.primary,
+  },
   list: {
     padding: spacing.xl,
-    paddingBottom: 100,
-  },
-  fab: {
-    position: 'absolute',
-    right: spacing['2xl'],
-    bottom: spacing['3xl'],
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.primaryDark,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  fabText: {
-    color: colors.white,
-    fontSize: 28,
-    fontWeight: '400',
-    marginTop: -2,
+    paddingBottom: spacing.xl,
   },
 });
