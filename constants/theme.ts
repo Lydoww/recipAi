@@ -8,51 +8,73 @@
  */
 
 export const colors = {
-  // Brand colors
-  primary: '#10b981', // Green emerald
-  primaryDark: '#059669',
-  primaryLight: '#34d399',
+  // Brand colors - Premium minimalist palette
+  primary: '#84A98C', // Sage green (natural, calming)
+  primaryDark: '#52796F', // Eucalyptus dark (sophisticated)
+  primaryLight: '#A8C5AC', // Sage light (subtle)
 
-  // Neutral colors
-  white: '#ffffff',
+  secondary: '#CAD2C5', // Pale sage (neutral accent)
+  secondaryDark: '#B4BFB6',
+  secondaryLight: '#DFE5DE',
+
+  accent: '#52796F', // Deep eucalyptus (premium)
+  accentDark: '#354F52',
+  accentLight: '#6B9080',
+
+  // Neutral colors - Warm minimalist
+  white: '#FFFFFF',
   black: '#000000',
+  offWhite: '#FAFAF9', // Warm off-white
   gray: {
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
+    50: '#FAFAF9',
+    100: '#F5F5F4',
+    200: '#E7E5E4',
+    300: '#D6D3D1',
+    400: '#A8A29E',
+    500: '#78716C',
+    600: '#57534E',
+    700: '#44403C',
+    800: '#2F3E46', // Charcoal (primary text)
+    900: '#1C1917',
   },
 
-  // Semantic colors
-  success: '#10b981',
-  error: '#ef4444',
-  warning: '#f59e0b',
-  info: '#3b82f6',
+  // Semantic colors - Subtle and elegant
+  success: '#6B9080',
+  error: '#C1666B',
+  warning: '#D4A373',
+  info: '#4A7C89',
 
   // Background colors
-  background: '#ffffff',
-  backgroundSecondary: '#f9fafb',
+  background: '#FAFAF9', // Warm off-white
+  backgroundSecondary: '#F5F5F4',
+  backgroundTertiary: '#FFFFFF',
+
+  // Gradient colors
+  gradient: {
+    primary: ['#84A98C', '#6B9080'], // Sage gradient
+    secondary: ['#52796F', '#354F52'], // Dark eucalyptus
+    overlay: ['rgba(47, 62, 70, 0.7)', 'rgba(47, 62, 70, 0)'], // Charcoal overlay
+    card: ['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.85)'], // Glassmorphism
+  },
 
   // Text colors
   text: {
-    primary: '#111827',
-    secondary: '#6b7280',
-    tertiary: '#9ca3af',
-    inverse: '#ffffff',
+    primary: '#2F3E46', // Charcoal
+    secondary: '#57534E', // Medium gray
+    tertiary: '#A8A29E', // Light gray
+    inverse: '#FFFFFF',
   },
 
   // Border colors
   border: {
-    light: '#f0f0f0',
-    default: '#e5e7eb',
-    dark: '#d1d5db',
+    light: '#F5F5F4',
+    default: '#E7E5E4',
+    dark: '#D6D3D1',
+    accent: '#CAD2C5',
   },
+
+  // Overlay
+  overlay: 'rgba(47, 62, 70, 0.6)', // Charcoal overlay
 } as const;
 
 export const spacing = {
@@ -68,10 +90,12 @@ export const spacing = {
 } as const;
 
 export const borderRadius = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
+  xs: 6,
+  sm: 10,
+  md: 14,
+  lg: 18,
+  xl: 24,
+  '2xl': 28,
   full: 9999,
 } as const;
 
@@ -103,26 +127,40 @@ export const typography = {
 } as const;
 
 export const shadows = {
-  sm: {
-    shadowColor: colors.black,
+  xs: {
+    shadowColor: '#2F3E46',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  sm: {
+    shadowColor: '#2F3E46',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
     elevation: 2,
   },
   md: {
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowColor: '#2F3E46',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 4,
   },
   lg: {
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowColor: '#2F3E46',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.16,
+    shadowRadius: 24,
+    elevation: 8,
+  },
+  xl: {
+    shadowColor: '#2F3E46',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.2,
+    shadowRadius: 32,
+    elevation: 12,
   },
 } as const;
 

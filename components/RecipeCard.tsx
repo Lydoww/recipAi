@@ -42,43 +42,48 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.lg,
-    marginBottom: spacing.lg,
+    backgroundColor: colors.backgroundTertiary,
+    borderRadius: borderRadius.xl,
+    marginBottom: spacing.xl,
     overflow: 'hidden',
-    ...shadows.md,
+    ...shadows.lg,
     borderWidth: 1,
     borderColor: colors.border.light,
   },
   image: {
     width: '100%',
-    height: 220,
-    backgroundColor: colors.gray[50],
+    height: 240,
+    backgroundColor: colors.gray[100],
   },
   placeholderImage: {
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.secondary,
   },
   placeholderText: {
-    fontSize: 60,
+    fontSize: 64,
   },
   content: {
-    padding: spacing.lg,
+    padding: spacing.xl,
   },
   title: {
-    fontSize: typography.fontSize.xl,
+    fontSize: typography.fontSize['2xl'],
     fontWeight: typography.fontWeight.bold,
     color: colors.text.primary,
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md,
+    lineHeight: 28,
   },
   duration: {
     fontSize: typography.fontSize.base,
     color: colors.text.secondary,
-    marginBottom: spacing.xs,
+    marginBottom: spacing.sm,
+    fontWeight: typography.fontWeight.medium,
   },
   category: {
     fontSize: typography.fontSize.sm,
-    color: colors.text.tertiary,
-    textTransform: 'capitalize',
+    color: colors.primary,
+    textTransform: 'uppercase',
+    fontWeight: typography.fontWeight.semibold,
+    letterSpacing: 0.8,
   },
 });

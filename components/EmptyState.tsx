@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { EmptyStateProps } from '../types';
-import { colors, spacing, typography, borderRadius } from '../constants/theme';
+import { colors, spacing, typography, borderRadius, shadows } from '../constants/theme';
 
 export function EmptyState({
   icon,
@@ -56,13 +56,17 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.primary,
-    paddingHorizontal: spacing['3xl'],
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing['4xl'],
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.primaryDark,
+    ...shadows.md,
   },
   buttonText: {
     color: colors.white,
     fontSize: typography.fontSize.lg,
     fontWeight: typography.fontWeight.semibold,
+    letterSpacing: 0.3,
   },
 });

@@ -7,7 +7,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { colors, spacing, typography, borderRadius } from '../constants/theme';
+import { colors, spacing, typography, borderRadius, shadows } from '../constants/theme';
 
 interface ButtonProps {
   label: string;
@@ -34,8 +34,8 @@ export function Button({
     styles.button,
     styles[variant],
     styles[size],
-    fullWidth && styles.fullWidth,
-    (disabled || loading) && styles.disabled,
+    ...(fullWidth ? [styles.fullWidth] : []),
+    ...((disabled || loading) ? [styles.disabled] : []),
   ];
 
   const textStyle: TextStyle[] = [
@@ -65,47 +65,56 @@ export function Button({
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.lg,
     justifyContent: 'center',
     alignItems: 'center',
+    ...shadows.md,
   },
   fullWidth: {
     width: '100%',
   },
   disabled: {
-    opacity: 0.6,
+    opacity: 0.5,
   },
 
   // Variants
   primary: {
     backgroundColor: colors.primary,
+    borderWidth: 1,
+    borderColor: colors.primaryDark,
   },
   secondary: {
-    backgroundColor: colors.gray[100],
+    backgroundColor: colors.backgroundTertiary,
+    borderWidth: 1,
+    borderColor: colors.border.default,
+    ...shadows.sm,
   },
   outline: {
     backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: colors.primary,
+    shadowOpacity: 0,
+    elevation: 0,
   },
 
   // Sizes
   small: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
   },
   medium: {
     paddingHorizontal: spacing['3xl'],
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.lg,
   },
   large: {
     paddingHorizontal: spacing['4xl'],
-    paddingVertical: spacing.lg,
+    paddingVertical: spacing.xl,
   },
 
   // Text styles
   text: {
     fontWeight: typography.fontWeight.semibold,
+    letterSpacing: 0.3,
   },
   primaryText: {
     color: colors.white,
