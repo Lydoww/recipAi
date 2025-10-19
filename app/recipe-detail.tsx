@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Recipe } from '../types/database';
 import { colors, spacing, typography, borderRadius, shadows } from '../constants/theme';
 import { supabase } from '../lib/supabase';
-import { LoadingState, ErrorState } from '../components';
+import { AnimatedLoadingState, ErrorState } from '../components';
 
 export default function RecipeDetailScreen() {
   const params = useLocalSearchParams();
@@ -65,7 +65,7 @@ export default function RecipeDetailScreen() {
   };
 
   if (loading) {
-    return <LoadingState message="Loading recipe..." />;
+    return <AnimatedLoadingState message="Loading recipe..." />;
   }
 
   if (error || !recipe) {

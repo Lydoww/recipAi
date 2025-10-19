@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { EmptyState, FilterChip, LoadingState, RecipeCard } from '../../components';
+import { EmptyState, FilterChip, AnimatedLoadingState, RecipeCard } from '../../components';
 import {
   borderRadius,
   colors,
@@ -105,7 +105,7 @@ export default function HomeScreen() {
   }, [recipes, debouncedSearchQuery, selectedCategory, selectedDuration]);
 
   if (loading) {
-    return <LoadingState message='Loading recipes...' />;
+    return <AnimatedLoadingState message='Loading recipes...' />;
   }
 
   if (recipes.length === 0 && !loading) {

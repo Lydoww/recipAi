@@ -4,6 +4,7 @@
 
 export * from './RecipeCard';
 export * from './LoadingState';
+export * from './AnimatedLoadingState';
 export * from './EmptyState';
 export * from './ErrorState';
 export * from './Button';

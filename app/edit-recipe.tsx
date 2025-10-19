@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Button, SuccessAnimation, LoadingState, ErrorState } from '../components';
+import { Button, SuccessAnimation, AnimatedLoadingState, ErrorState } from '../components';
 import {
   borderRadius,
   colors,
@@ -133,7 +133,7 @@ export default function EditRecipeScreen() {
   }
 
   if (loading) {
-    return <LoadingState message="Loading recipe..." />;
+    return <AnimatedLoadingState message="Loading recipe..." />;
   }
 
   if (error && !recipe) {
