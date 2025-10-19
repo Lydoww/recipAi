@@ -20,6 +20,18 @@ export default function RootLayout() {
           headerTintColor: '#2F3E46',
         }}
       />
+      <Stack.Screen
+        name="edit-recipe"
+        options={{
+          presentation: 'card',
+          headerShown: true,
+          title: 'Edit Recipe',
+          headerStyle: {
+            backgroundColor: '#FAFAF9',
+          },
+          headerTintColor: '#2F3E46',
+        }}
+      />
     </Stack>
   );
 }

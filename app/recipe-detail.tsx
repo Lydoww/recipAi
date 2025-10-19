@@ -7,13 +7,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { Recipe } from '../types/database';
 import { colors, spacing, typography, borderRadius, shadows } from '../constants/theme';
 
 export default function RecipeDetailScreen() {
   const params = useLocalSearchParams();
   const recipe: Recipe = JSON.parse(params.recipe as string);
+
+  const handleEdit = () => {
+    router.push({
+      pathname: '/edit-recipe',
+      params: { recipe: JSON.stringify(recipe) },
+    });
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -30,7 +38,19 @@ export default function RecipeDetailScreen() {
       )}
 
       <View style={styles.content}>
-        <Text style={styles.title}>{recipe.title}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>{recipe.title}</Text>
+          <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
+            <Ionicons name='pencil' size={20} color={colors.white} />
+          </TouchableOpacity>
+        </View>
+
+        {recipe.edited_by_user && (
+          <View style={styles.editedBadge}>
+            <Ionicons name='checkmark-circle' size={16} color={colors.primary} />
+            <Text style={styles.editedText}>Edited by you</Text>
+          </View>
+        )}
 
         {recipe.duration && (
           <View style={styles.metaRow}>
@@ -94,12 +114,44 @@ const styles = StyleSheet.create({
   content: {
     padding: spacing.xl,
   },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: spacing.sm,
+  },
   title: {
+    flex: 1,
     fontSize: typography.fontSize['4xl'],
     fontWeight: typography.fontWeight.bold,
     color: colors.text.primary,
-    marginBottom: spacing.md,
     lineHeight: 36,
+    marginRight: spacing.md,
+  },
+  editButton: {
+    backgroundColor: colors.primary,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...shadows.md,
+  },
+  editedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.primaryLight,
+    alignSelf: 'flex-start',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+    marginBottom: spacing.md,
+  },
+  editedText: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.medium,
+    color: colors.primaryDark,
+    marginLeft: spacing.xs,
   },
   metaRow: {
     flexDirection: 'row',

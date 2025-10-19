@@ -111,7 +111,29 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
   - [x] Premium styling with shadows and borders
   - [x] Sage green highlight when selected
 
-### 🚧 **Phase 2e: Video Processing (NEXT)**
+### ✅ **Phase 2e: Recipe Editing (COMPLETED)**
+- [x] Edit recipe screen
+  - [x] Pre-filled form with existing recipe data
+  - [x] Edit title, duration, category
+  - [x] Edit ingredients (one per line)
+  - [x] Edit steps (one per line)
+  - [x] Validation for required fields
+- [x] Edit button on recipe detail screen
+  - [x] Circular edit button (pencil icon)
+  - [x] Premium styling with shadows
+- [x] Update recipe API
+  - [x] Supabase UPDATE query
+  - [x] Set edited_by_user flag to true
+  - [x] Success/error handling
+- [x] Database schema update
+  - [x] Added edited_by_user boolean column
+  - [x] Default value: false
+  - [x] Migration file created
+- [x] "Edited by you" badge
+  - [x] Shows on recipe detail if edited_by_user is true
+  - [x] Green badge with checkmark icon
+
+### 🚧 **Phase 3: Video Processing (NEXT)**
 - [ ] Real video download (TikTok/Instagram scraping with yt-dlp)
 - [ ] Audio extraction from video
 - [ ] Whisper API transcription
@@ -138,10 +160,11 @@ recipai/
 │   ├── _layout.tsx                  # Root Stack layout
 │   ├── (tabs)/                      # Tab Navigator
 │   │   ├── _layout.tsx              # Tabs configuration
-│   │   ├── index.tsx                # Tab 1: Recipes list
-│   │   ├── add.tsx                  # Tab 2: Add recipe
+│   │   ├── index.tsx                # Tab 1: Recipes list with filters
+│   │   ├── add.tsx                  # Tab 2: Add recipe from URL
 │   │   └── settings.tsx             # Tab 3: Settings
-│   └── recipe-detail.tsx            # Recipe details (modal)
+│   ├── recipe-detail.tsx            # Recipe details with edit button
+│   └── edit-recipe.tsx              # Edit recipe form
 │
 ├── 🧩 components/                   # Reusable UI components
 │   ├── Button.tsx                   # Premium button with shadows
@@ -216,6 +239,7 @@ Table: recipes
 - category (text)
 - image_url (text)
 - source_url (text, unique)
+- edited_by_user (boolean, default: false)
 - created_at (timestamp)
 ```
 
@@ -560,10 +584,13 @@ Private project - All rights reserved
 ---
 
 **Last Updated:** 2025-01-19
-**Current Phase:** Phase 2d Complete (Advanced Filters)
-**Status:** Search + Filters + Grid working ✅ | Phase 2e (Real Video) next 🚧
+**Current Phase:** Phase 2e Complete (Recipe Editing)
+**Status:** Full CRUD + Filters working ✅ | Phase 3 (Real Video) next 🚧
 
 ### **Recent Updates**
+- ✅ Recipe editing with full form (title, duration, category, ingredients, steps)
+- ✅ "Edited by you" badge on edited recipes
+- ✅ Database migration for edited_by_user column
 - ✅ Advanced filters (category + duration chips)
 - ✅ Combined filtering logic (search + category + duration)
 - ✅ Clear all filters button

@@ -20,6 +20,7 @@ export interface Database {
           ingredients: string[]
           steps: string[]
           source_url: string | null
+          edited_by_user: boolean
         }
         Insert: {
           id?: string
@@ -31,6 +32,7 @@ export interface Database {
           ingredients: string[]
           steps: string[]
           source_url?: string | null
+          edited_by_user?: boolean
         }
         Update: {
           id?: string
@@ -42,6 +44,7 @@ export interface Database {
           ingredients?: string[]
           steps?: string[]
           source_url?: string | null
+          edited_by_user?: boolean
         }
       }
     }
