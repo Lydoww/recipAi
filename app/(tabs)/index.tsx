@@ -29,9 +29,9 @@ const CATEGORIES = [
 
 // Duration filters
 const DURATIONS = [
-  { label: 'Quick', value: 'quick', maxMinutes: 20 },
-  { label: 'Medium', value: 'medium', maxMinutes: 40 },
-  { label: 'Long', value: 'long', maxMinutes: Infinity },
+  { label: '< 15 min', value: 'quick', minMinutes: 0, maxMinutes: 15 },
+  { label: '15-30 min', value: 'medium', minMinutes: 15, maxMinutes: 30 },
+  { label: '> 30 min', value: 'long', minMinutes: 30, maxMinutes: Infinity },
 ];
 
 export default function HomeScreen() {
@@ -90,7 +90,11 @@ export default function HomeScreen() {
         const durationFilter = DURATIONS.find((d) => d.value === selectedDuration);
         if (durationFilter) {
           const recipeMinutes = parseInt(recipe.duration?.match(/\d+/)?.[0] || '0');
-          if (recipeMinutes > durationFilter.maxMinutes) {
+          // Check if recipe duration is within the filter range
+          if (
+            recipeMinutes < durationFilter.minMinutes ||
+            recipeMinutes > durationFilter.maxMinutes
+          ) {
             return false;
           }
         }

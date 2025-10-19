@@ -98,7 +98,8 @@ User shares TikTok/Instagram URL → AI extracts recipe (title, ingredients, ste
   - [x] Horizontal scroll for categories
   - [x] Toggle selection (click to select/deselect)
 - [x] Duration filter chips
-  - [x] Quick (<20 min), Medium (<40 min), Long (40+ min)
+  - [x] < 15 min, 15-30 min, > 30 min
+  - [x] Range-based filtering (min/max minutes)
   - [x] Parse duration from recipe metadata
 - [x] Combined filtering logic
   - [x] Search + Category + Duration work together
