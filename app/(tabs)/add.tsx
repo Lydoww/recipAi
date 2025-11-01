@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -23,6 +23,15 @@ export default function AddRecipeScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   async function handleSubmit() {
     setError(null);
@@ -48,7 +57,7 @@ export default function AddRecipeScreen() {
 
         setShowSuccess(true);
 
-        setTimeout(() => {
+        timeoutRef.current = setTimeout(() => {
           setShowSuccess(false);
           router.push({
             pathname: '/recipe-detail',

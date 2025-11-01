@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -21,8 +21,11 @@ export default function RecipeDetailScreen() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isMountedRef = useRef(true);
 
   const fetchRecipe = async () => {
+    if (!isMountedRef.current) return;
+
     setLoading(true);
     setError(null);
 
@@ -35,23 +38,31 @@ export default function RecipeDetailScreen() {
 
       if (fetchError) throw fetchError;
       if (!data) throw new Error('Recipe not found');
-      setRecipe(data);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load recipe');
+
+      if (isMountedRef.current) {
+        setRecipe(data);
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load recipe';
+      if (isMountedRef.current) {
+        setError(errorMessage);
+      }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
-  // Fetch on mount
-  useEffect(() => {
-    fetchRecipe();
-  }, [recipeId]);
-
-  // Refetch when screen comes into focus (e.g., after editing)
+  // Fetch when screen comes into focus (e.g., on mount or after editing)
   useFocusEffect(
     React.useCallback(() => {
+      isMountedRef.current = true;
       fetchRecipe();
+
+      return () => {
+        isMountedRef.current = false;
+      };
     }, [recipeId])
   );
 

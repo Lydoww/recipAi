@@ -5,12 +5,13 @@ import { colors, spacing, borderRadius, typography, shadows } from '../../consta
 
 interface RecipeCardProps {
   recipe: Recipe;
-  onPress: () => void;
+  onPress: (recipe: Recipe) => void;
 }
 
-export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
+export const RecipeCard = React.memo(({ recipe, onPress }: RecipeCardProps) => {
+  const handlePress = () => onPress(recipe);
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity style={styles.card} onPress={handlePress} activeOpacity={0.7}>
       {recipe.image_url ? (
         <Image
           source={{ uri: recipe.image_url }}
@@ -38,7 +39,7 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
       </View>
     </TouchableOpacity>
   );
-}
+});
 
 const styles = StyleSheet.create({
   card: {

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { EmptyState, FilterChip, AnimatedLoadingState, RecipeCard } from '../../components';
 import {
@@ -25,14 +25,14 @@ const CATEGORIES = [
   'Mediterranean',
   'American',
   'Korean',
-];
+] as const;
 
 // Duration filters
 const DURATIONS = [
   { label: '< 15 min', value: 'quick', minMinutes: 0, maxMinutes: 15 },
   { label: '15-30 min', value: 'medium', minMinutes: 15, maxMinutes: 30 },
   { label: '> 30 min', value: 'long', minMinutes: 30, maxMinutes: Infinity },
-];
+] as const;
 
 export default function HomeScreen() {
   const { recipes, loading, refetch } = useRecipes();
@@ -49,12 +49,12 @@ export default function HomeScreen() {
     setRefreshing(false);
   };
 
-  const handleRecipePress = (recipe: Recipe) => {
+  const handleRecipePress = useCallback((recipe: Recipe) => {
     router.push({
       pathname: '/recipe-detail',
       params: { id: recipe.id },
     });
-  };
+  }, []);
 
   const clearAllFilters = () => {
     setSearchQuery('');
@@ -222,7 +222,7 @@ export default function HomeScreen() {
           data={filteredRecipes}
           renderItem={({ item }) => (
             <View style={styles.cardWrapper}>
-              <RecipeCard recipe={item} onPress={() => handleRecipePress(item)} />
+              <RecipeCard recipe={item} onPress={handleRecipePress} />
             </View>
           )}
           keyExtractor={(item) => item.id}
@@ -230,6 +230,10 @@ export default function HomeScreen() {
           contentContainerStyle={styles.list}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          removeClippedSubviews={true}
+          maxToRenderPerBatch={10}
+          windowSize={5}
+          initialNumToRender={6}
         />
       )}
     </View>

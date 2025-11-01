@@ -1,7 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -11,16 +10,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Button, SuccessAnimation, AnimatedLoadingState, ErrorState } from '../components';
 import {
-  borderRadius,
-  colors,
-  spacing,
-  typography,
-} from '../constants/theme';
-import { Database, Recipe } from '../types/database';
+  AnimatedLoadingState,
+  Button,
+  ErrorState,
+  SuccessAnimation,
+} from '../components';
+import { borderRadius, colors, spacing, typography } from '../constants/theme';
 import { supabase } from '../lib/supabase';
+import { Recipe } from '../types/database';
 
 export default function EditRecipeScreen() {
   const params = useLocalSearchParams();
@@ -36,10 +34,16 @@ export default function EditRecipeScreen() {
   const [saving, setSaving] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isMountedRef = useRef(true);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // Fetch recipe data
   useEffect(() => {
+    isMountedRef.current = true;
+
     const fetchRecipe = async () => {
+      if (!isMountedRef.current) return;
+
       setLoading(true);
       try {
         const { data, error: fetchError } = await supabase
@@ -51,20 +55,34 @@ export default function EditRecipeScreen() {
         if (fetchError) throw fetchError;
         if (!data) throw new Error('Recipe not found');
 
-        setRecipe(data);
-        setTitle(data.title);
-        setDuration(data.duration || '');
-        setCategory(data.category || '');
-        setIngredients(data.ingredients.join('\n'));
-        setSteps(data.steps.join('\n'));
-      } catch (err: any) {
-        setError(err.message || 'Failed to load recipe');
+        if (isMountedRef.current) {
+          setRecipe(data);
+          setTitle(data.title);
+          setDuration(data.duration || '');
+          setCategory(data.category || '');
+          setIngredients(data.ingredients.join('\n'));
+          setSteps(data.steps.join('\n'));
+        }
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load recipe';
+        if (isMountedRef.current) {
+          setError(errorMessage);
+        }
       } finally {
-        setLoading(false);
+        if (isMountedRef.current) {
+          setLoading(false);
+        }
       }
     };
 
     fetchRecipe();
+
+    return () => {
+      isMountedRef.current = false;
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, [recipeId]);
 
   async function handleSave() {
@@ -99,9 +117,11 @@ export default function EditRecipeScreen() {
     setSaving(true);
 
     try {
+      // Note: Supabase v2.75.1 has a known typing issue with .update() method
+      // when Database generic is used. The operation is safe - schema matches.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error: updateError } = await supabase
         .from('recipes')
-        // @ts-ignore - Supabase type inference issue with update
         .update({
           title: title.trim(),
           duration: duration.trim() || null,
@@ -109,7 +129,7 @@ export default function EditRecipeScreen() {
           ingredients: ingredientsArray,
           steps: stepsArray,
           edited_by_user: true,
-        })
+        } as any)
         .eq('id', recipeId);
 
       if (updateError) {
@@ -120,10 +140,12 @@ export default function EditRecipeScreen() {
       // Show success animation
       setShowSuccess(true);
 
-      setTimeout(() => {
-        setShowSuccess(false);
-        // Just go back - recipe-detail will refetch automatically
-        router.back();
+      timeoutRef.current = setTimeout(() => {
+        if (isMountedRef.current) {
+          setShowSuccess(false);
+          // Just go back - recipe-detail will refetch automatically
+          router.back();
+        }
       }, 2500);
     } catch (err) {
       setError('Failed to update recipe. Please try again.');
@@ -133,16 +155,11 @@ export default function EditRecipeScreen() {
   }
 
   if (loading) {
-    return <AnimatedLoadingState message="Loading recipe..." />;
+    return <AnimatedLoadingState message='Loading recipe...' />;
   }
 
   if (error && !recipe) {
-    return (
-      <ErrorState
-        message={error}
-        onRetry={() => router.back()}
-      />
-    );
+    return <ErrorState message={error} onRetry={() => router.back()} />;
   }
 
   return (
@@ -153,7 +170,7 @@ export default function EditRecipeScreen() {
       <SuccessAnimation
         visible={showSuccess}
         onAnimationFinish={() => setShowSuccess(false)}
-        message="Recipe edited successfully!"
+        message='Recipe edited successfully!'
       />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
@@ -168,7 +185,10 @@ export default function EditRecipeScreen() {
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>Title *</Text>
             <TextInput
-              style={[styles.input, error && !title.trim() && styles.inputError]}
+              style={[
+                styles.input,
+                error && !title.trim() && styles.inputError,
+              ]}
               placeholder='Recipe title'
               placeholderTextColor={colors.text.tertiary}
               value={title}
@@ -211,9 +231,8 @@ export default function EditRecipeScreen() {
                 styles.input,
                 styles.textArea,
                 error &&
-                  ingredients
-                    .split('\n')
-                    .filter((i) => i.trim().length > 0).length === 0 &&
+                  ingredients.split('\n').filter((i) => i.trim().length > 0)
+                    .length === 0 &&
                   styles.inputError,
               ]}
               placeholder='400g spaghetti&#10;200g pancetta&#10;4 eggs'
@@ -235,9 +254,8 @@ export default function EditRecipeScreen() {
                 styles.input,
                 styles.textArea,
                 error &&
-                  steps
-                    .split('\n')
-                    .filter((s) => s.trim().length > 0).length === 0 &&
+                  steps.split('\n').filter((s) => s.trim().length > 0)
+                    .length === 0 &&
                   styles.inputError,
               ]}
               placeholder='Boil water and cook pasta&#10;Fry pancetta until crispy&#10;Mix eggs with cheese'
